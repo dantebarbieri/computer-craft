@@ -20,10 +20,13 @@ modem.open(SERVER_RECV)
 
 repeat
     write("broadcast: ")
-    local target = tonumber(io.read())
+    local input = io.read()
+    local target = tonumber(input)
     local channel = target or CLIENT_RECV
-    write("command: ")
-    local command = target or io.read()
+    if target then
+        write("command: ")
+    end
+    local command = target and io.read() or input
     local log = target and "sending " .. command .. " to " .. channel or "broadcasting " .. command .. " to all clients"
     print(log)
     modem.transmit(LOGS_RECV, SERVER_RECV, log)
