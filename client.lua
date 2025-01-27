@@ -4,7 +4,7 @@ CLIENT_RECV = 10                     -- all clients receive messages on this cha
 MY_RECV = math.random(300, 900) * 10 -- this client receives messages on this channel
 EXIT_COMMAND = "exit" -- shared exit command where clients do not respond
 
-local modem = peripheral.wrap(SERVER_MODEM_SIDE)
+local modem = peripheral.wrap(CLIENT_MODEM_SIDE)
 modem.open(CLIENT_RECV)
 modem.open(MY_RECV)
 
