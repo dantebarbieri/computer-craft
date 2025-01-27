@@ -19,21 +19,15 @@ end
 modem.open(SERVER_RECV)
 
 repeat
-    write("Enter the target channel or press enter to broadcast: ")
+    write("broadcast: ")
     local target = tonumber(io.read())
     local channel = target or CLIENT_RECV
-    local log = target and "sending to " .. channel or "broadcasting to all clients"
+    write("command: ")
+    local command = target or io.read()
+    local log = target and "sending " .. command .. " to " .. channel or "broadcasting " .. command .. " to all clients"
     print(log)
     modem.transmit(LOGS_RECV, SERVER_RECV, log)
-    write("Enter a command or type 'exit' to quit: ")
-    local command = io.read()
     modem.transmit(channel, SERVER_RECV, command)
-    if command ~= EXIT_COMMAND then
-        local event, modemSide, senderChannel, replyChannel, message, senderDistance = os.pullEvent("modem_message")
-        log = message .. " from " .. replyChannel .. " at distance " .. senderDistance
-        print(log)
-        modem.transmit(LOGS_RECV, SERVER_RECV, log)
-    end
 until command == EXIT_COMMAND
 
 modem.close(SERVER_RECV)
