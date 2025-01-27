@@ -1,7 +1,18 @@
-LOGGER_MODEM_SIDE = "back" -- side of the modem on the logger
 LOGS_RECV = 1                        -- general purpose logger
 
-local modem = peripheral.wrap(LOGGER_MODEM_SIDE)
+local modem = nil
+local peripherals = peripheral.getNames()
+for name = 1, #peripherals, 1 do
+    if (peripheral.getType(peripherals[name]) == "modem") then
+        modem = peripheral.wrap(peripherals[name])
+        break
+    end
+end
+
+if(modem == nil) then
+    error("Error, this program requires a Modem!")
+end
+
 modem.open(LOGS_RECV)
 
 while true do

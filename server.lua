@@ -1,10 +1,21 @@
-SERVER_MODEM_SIDE = "top" -- side of the modem on the server
 LOGS_RECV = 1    -- general purpose logger
 CLIENT_RECV = 10 -- all clients receive messages on this channel
 SERVER_RECV = 20 -- server receives messages on this channel
 EXIT_COMMAND = "exit" -- shared exit command where clients do not respond
 
-local modem = peripheral.wrap(SERVER_MODEM_SIDE)
+local modem = nil
+local peripherals = peripheral.getNames()
+for name = 1, #peripherals, 1 do
+    if (peripheral.getType(peripherals[name]) == "modem") then
+        modem = peripheral.wrap(peripherals[name])
+        break
+    end
+end
+
+if (modem == nil) then
+    error("Error, this program requires a Modem!")
+end
+
 modem.open(SERVER_RECV)
 
 repeat
