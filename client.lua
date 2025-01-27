@@ -37,9 +37,6 @@ end
 
 repeat
     local event, modemSide, senderChannel, replyChannel, message, senderDistance = os.pullEvent("modem_message")
-    local response = "ack: " .. message .. " from " .. replyChannel
-    modem.transmit(replyChannel, MY_RECV, response)
-    modem.transmit(LOGS_RECV, MY_RECV, response)
 
     local log = nil
     if message == "forward" then
@@ -62,11 +59,11 @@ repeat
         log = turtle.turnRight() and "turned right" or "could not turn right"
     elseif message == "dig" then
         log = turtle.dig() and "dug" or "could not dig"
+    else
+        log = "unknown command - " .. message
     end
 
-    if log then
-        modem.transmit(LOGS_RECV, MY_RECV, log)
-    end
+    modem.transmit(LOGS_RECV, MY_RECV, log)
 
 until message == EXIT_COMMAND
 
